@@ -1,5 +1,44 @@
-# Vue 3 + TypeScript + Vite
+# Re-Cycle
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A fullstack application built with Hono and Vue 3, deployed on Cloudflare Pages.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Tech Stack
+
+- **Frontend:** Vue 3 + TypeScript
+- **Backend:** Hono (Cloudflare Workers)
+- **Runtime:** Bun
+- **Deployment:** Cloudflare Pages
+
+## Getting Started
+
+```bash
+# Install dependencies
+bun install
+
+# Start development
+bun run dev
+
+# Build for production
+bun run build
+
+# Preview production build
+bun run preview
+
+# Deploy
+bun run deploy
+```
+
+## Project Structure
+
+```
+src/
+├── client/     # Vue 3 frontend
+└── server/     # Hono API backend
+```
+
+## Environment Variables
+
+- **Client:** Create `.env` with `VITE_` prefix variables
+- **Server:** Create `.dev.vars` for local development
+
+For production, configure environment variables in Cloudflare Pages dashboard.
