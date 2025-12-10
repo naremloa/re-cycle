@@ -4,6 +4,7 @@
 - **Runtime:** Bun
 - **Frontend:** Vue 3 + TypeScript (`src/client`)
 - **Backend:** Hono + Cloudflare Workers (`src/server`)
+- **Database:** Cloudflare D1 (SQLite) with Drizzle ORM
 - **Build:** Vite (Rolldown) - Dual-mode (client/server)
 - **Deploy:** Cloudflare Pages (Advanced Mode)
 - **Code Quality:** ESLint (@antfu/eslint-config)
@@ -18,7 +19,13 @@ re-cycle/
 │   │   ├── App.vue       # Root component
 │   │   └── style.css     # Global styles
 │   └── server/           # Hono backend
-│       └── index.ts      # API routes + static serving
+│       ├── index.ts      # Main entry + static serving
+│       ├── api-v1.ts     # API v1 routes
+│       ├── types.ts      # Type definitions (Bindings)
+│       └── db/
+│           └── schema.ts # Drizzle database schema
+├── drizzle/              # Database migrations (generated)
+├── drizzle.config.ts     # Drizzle Kit configuration
 ├── tsconfig.json         # Root TypeScript config
 ├── tsconfig.client.json  # Client-side config
 ├── tsconfig.server.json  # Server-side config (Workers)
@@ -57,11 +64,44 @@ Three-mode build system:
    - SSR mode, ESNext target
    - Entry: `src/server/index.ts`
 
-## Backend Features
-- **API Routes**: `/api/*` handled by Hono
-- **Static Serving**: Uses Cloudflare Pages `ASSETS` binding
-- **SPA Fallback**: Returns `index.html` for client-side routing
-- **Type Safety**: Cloudflare Workers types (`Bindings`, `D1Database`)
+## Backend Architecture
+
+### Server Structure
+The backend is modularized for better maintainability:
+
+1. **`src/server/index.ts`** - Main application entry
+   - Routes API requests to versioned modules (`/api/v1` → `api-v1.ts`)
+   - Handles static file serving via Cloudflare Pages `ASSETS` binding
+   - Implements SPA fallback (returns `index.html` for client-side routing)
+
+2. **`src/server/api-v1.ts`** - API v1 routes
+   - Contains all API v1 endpoints (e.g., `/api/v1/hello`, `/api/v1/posts`)
+   - Uses Drizzle ORM for database operations
+   - Independent Hono app mounted on main router
+
+3. **`src/server/types.ts`** - Type definitions
+   - Defines `Bindings` type for Cloudflare Workers environment
+   - Includes `ASSETS` (static fetcher), `DB` (D1Database), and custom env vars
+
+4. **`src/server/db/schema.ts`** - Database schema
+   - Drizzle ORM table definitions (e.g., `posts` table)
+   - Auto-generates TypeScript types for Select/Insert operations
+
+### Database Integration (Cloudflare D1 + Drizzle)
+
+- **Schema**: `src/server/db/schema.ts` - Drizzle table definitions with auto-generated TypeScript types
+- **Usage**: `src/server/api-v1.ts` - API handlers use `drizzle(c.env.DB)` to access database
+- **Config**: `drizzle.config.ts` - Auto-detects local D1 database in `.wrangler/state/v3/d1/`
+
+### API Versioning
+API routes are organized by version:
+- **v1**: `/api/v1/*` - Current stable API
+- Future versions can be added as separate modules (e.g., `api-v2.ts`)
+
+### Type Safety
+- `Bindings` type ensures environment variables are properly typed
+- Drizzle ORM provides compile-time type safety for database queries
+- All API handlers have type-safe context via `Hono<{ Bindings: Bindings }>`
 
 ## Environment Variables
 
@@ -160,6 +200,7 @@ Environment variables are configured in Cloudflare Pages dashboard and accessed 
 **Runtime:**
 - `hono`: Web framework for Cloudflare Workers
 - `vue`: Progressive JavaScript framework
+- `drizzle-orm`: TypeScript ORM for SQL databases
 
 **Dev Tools:**
 - `@hono/vite-dev-server`: Hono integration with Vite

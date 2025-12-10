@@ -1,3 +1,10 @@
 name = "re-cycle-app"
 pages_build_output_dir = "dist"
 compatibility_date = "2024-04-01"
+
+# Binding D1 database
+[[d1_databases]]
+binding = "DB"
+database_name = "re-cycle-db"
+database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+migrations_dir = "drizzle"

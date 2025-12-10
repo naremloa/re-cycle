@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1765356827909,
+      "tag": "0000_cloudy_stick",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1765356908147,
+      "tag": "0001_petite_randall_flagg",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1765360848065,
+      "tag": "0002_sour_grandmaster",
+      "breakpoints": true
+    }
+  ]
+}

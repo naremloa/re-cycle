@@ -1,22 +1,10 @@
+import type { Bindings } from './types'
 import { Hono } from 'hono'
-
-// Define Cloudflare Pages environment bindings
-type Bindings = {
-  // Static assets fetcher automatically provided by Cloudflare Pages
-  ASSETS: Fetcher
-  DB: D1Database
-  VERSION?: string
-}
+import { app as apiV1 } from './api-v1'
 
 const app = new Hono<{ Bindings: Bindings }>()
 
-app.get('/api/hello', (c) => {
-  const version = c.env.VERSION ?? 'V0'
-  return c.json({
-    message: `Hello from Hono (VERSION: ${version})!`,
-    timestamp: new Date().toISOString(),
-  })
-})
+app.route('/api/v1', apiV1)
 
 app.get('*', async (c) => {
   const env = c.env
