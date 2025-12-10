@@ -1,0 +1,5 @@
+# Server-side environment variables for local development
+# Copy this file to .dev.vars and fill in your values
+# reference: https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets
+
+VERSION=v1.0.0-dev
