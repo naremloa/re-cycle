@@ -9,6 +9,11 @@
     "skipLibCheck": true,
     "noEmit": true,
 
+    "baseUrl": ".",
+    "paths": {
+      "@server/*": ["src/server/*"]
+    },
+
     /* Strictness aligned with Client/Node */
     "strict": true,
     "noUnusedLocals": true,

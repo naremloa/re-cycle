@@ -10,7 +10,8 @@ function resolvePath(...paths: string[]) {
 
 export default defineConfig(({ mode }) => {
   const commonAlias = {
-    '@': resolvePath('src/client'),
+    '@client': resolvePath('src/client'),
+    '@server': resolvePath('src/server'),
   }
 
   // 1. Client Build
@@ -31,6 +32,7 @@ export default defineConfig(({ mode }) => {
   // 2. Server Build
   if (mode === 'server') {
     return {
+      resolve: { alias: commonAlias },
       build: {
         outDir: resolvePath('dist'),
         emptyOutDir: false,
@@ -53,7 +55,7 @@ export default defineConfig(({ mode }) => {
     envDir: resolvePath(),
     resolve: { alias: commonAlias },
     plugins: [
-      vue(),
+    vue(),
       devServer({
         entry: resolvePath('src/server/index.ts'),
         adapter: pagesAdapter,

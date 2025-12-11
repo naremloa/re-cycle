@@ -3,3 +3,4 @@
 # reference: https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets
 
 VERSION=v1.0.0-dev
+JWT_SECRET=

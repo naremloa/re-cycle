@@ -1,10 +1,20 @@
 import type { Bindings } from './types'
 import { Hono } from 'hono'
-import { app as apiV1 } from './api-v1'
+import { app as apiV1 } from './api/v1'
+import { app as apiAuth } from './auth'
 
 const app = new Hono<{ Bindings: Bindings }>()
 
+app.route('/api/auth', apiAuth)
 app.route('/api/v1', apiV1)
+
+app.get('/hello', (c) => {
+  const version = c.env.VERSION ?? 'V0'
+  return c.json({
+    message: `Hello from Hono (VERSION: ${version})!`,
+    timestamp: new Date().toISOString(),
+  })
+})
 
 app.get('*', async (c) => {
   const env = c.env

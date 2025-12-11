@@ -4,4 +4,5 @@ export type Bindings = {
   ASSETS: Fetcher
   DB: D1Database
   VERSION?: string
+  JWT_SECRET?: string
 }
